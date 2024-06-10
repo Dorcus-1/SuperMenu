@@ -41,7 +41,7 @@ export default function TabLayout() {
           ),
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="cart"
         options={{
           title:"",
@@ -49,6 +49,19 @@ export default function TabLayout() {
             <TabBarIcon
               size={focused ? 24 : 26}
               name={"shopping-cart"}
+              color={"#A01B2C"}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title:"",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              size={focused ? 24 : 26}
+              name={"user"}
               color={"#A01B2C"}
             />
           ),

@@ -1,13 +1,51 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { Link, router } from "expo-router";
 import Formfield from "@/components/form_field";
 import { Feather } from "@expo/vector-icons";
 import ButtonComponent from "@/components/button";
 import { useNavigation } from "expo-router";
+import axios from "axios";
 
 // create a functional component
 const SignUp = () => {
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const API_URL = "http://10.5.221.171:8000"; // Adjust this to your backend URL
+
+  const handleSignUp = async () => {
+    try {
+      const userData = {
+        fullnames: fullName,
+        email: email,
+        password: password,
+        phone,
+      };
+
+      const response = await axios.post(`${API_URL}/user/create`, userData);
+      console.log("here");
+
+      console.log(response);
+      console.log("Success", "You have signed up successfully!");
+      router.push("login");
+      // Navigate to the login page
+    } catch (error) {
+      console.log("Error", "Failed to sign up. Please try again.");
+      console.log(error);
+    }
+  };
+  const handleEmailChange = (text: string) => {
+    setFullName(text);
+  };
+
   const navigation = useNavigation();
   return (
     <View className="flex-1 justify-center items-center bg-[#A01B2C]">
@@ -21,14 +59,37 @@ const SignUp = () => {
           Enter your credentials to continue
         </Text>
         <View className="pt-12">
-          <Formfield icon={"user"} placeholder={"Full names"} />
-          <Formfield icon={"phone"} placeholder={"Phone number"} />
-          <Formfield icon={"lock"} placeholder={"Enter your password"} />
+          <Formfield
+            value={fullName}
+            icon={"user"}
+            placeholder={"Full names"}
+            handleChange={handleEmailChange}
+          />
+          <Formfield
+            icon={"mail"}
+            value={email}
+            placeholder={"Email"}
+            handleChange={(e: string) => setEmail(e)}
+          />
+          <Formfield
+            icon={"phone"}
+            value={phone}
+            placeholder={"Phone number"}
+            handleChange={(e: string) => setPhone(e)}
+          />
+          <Formfield
+            icon={"lock"}
+            value={password}
+            placeholder={"Enter your password"}
+            handleChange={(pass: string) => setPassword(pass)}
+            secureTextEntry={true}
+          />
           <ButtonComponent
             name={"Sign Up"}
             position="justify-center"
             color="bg-primary"
             textColor="text-white"
+            handlePress={handleSignUp}
           />
         </View>
         <View className="flex-row items-center my-4">
@@ -38,7 +99,7 @@ const SignUp = () => {
         </View>
         <Text>
           Already have an account?
-          <TouchableOpacity onPress={() => router.push('login')}>
+          <TouchableOpacity onPress={() => router.push("login")}>
             <Text className="pt-4 text-primary">Sign In</Text>
           </TouchableOpacity>
         </Text>

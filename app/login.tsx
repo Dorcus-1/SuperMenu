@@ -1,16 +1,43 @@
 //import libraries
-import React from "react";
+import React, { useState }  from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Link, useRouter } from "expo-router";
 import Formfield from "@/components/form_field";
 import { Feather } from "@expo/vector-icons";
 import ButtonComponent from "@/components/button";
 import { useNavigation } from "expo-router";
+import axios from "axios";
 
 // create a functional component
 const SignIn = () => {
-    const navigation = useNavigation();
-    const router=useRouter()
+  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const API_URL = "http://10.5.221.171:8000"; 
+
+
+  const handleSignIn = async () => {
+    try {
+      const userData = {
+       
+        email: email,
+        password: password,
+        
+      };
+      const response = await axios.post(`${API_URL}/user/login`, userData);
+      console.log("here");
+
+      console.log(response);
+      console.log("Success", "You have signed up successfully!");
+      router.push("landing-page");
+      // Navigate to the login page
+    } catch (error) {
+      console.log("Error", "Failed to sign up. Please try again.");
+      console.log(error);
+    }  
+  }
+  const navigation = useNavigation();
+  const router = useRouter();
   return (
     <View className="flex-1 justify-center items-center bg-[#A01B2C]">
       <View className="h-[20%] w-full "></View>
@@ -23,15 +50,26 @@ const SignIn = () => {
           Enter your credentials to continue
         </Text>
         <View className="pt-6">
-          <Formfield icon={"mail"} placeholder={"Enter your email"} />
-          <Formfield icon={"lock"} placeholder={"Enter your password"} />
+        <Formfield
+            icon={"mail"}
+            value={email}
+            placeholder={"Email"}
+            handleChange={(e: string) => setEmail(e)}
+          />
+          <Formfield
+            icon={"lock"}
+            value={password}
+            placeholder={"Enter your password"}
+            handleChange={(pass: string) => setPassword(pass)}
+            secureTextEntry={true}
+          />
           <ButtonComponent
             name={"Sign In"}
             position="justify-center"
             color="bg-primary"
             textColor="text-white"
-            onPress={()=>router.push('/landing-page')}
-
+            handlePress={handleSignIn}
+        
           />
           <View className="flex-row items-center my-4">
             <View className="flex-1 h-px bg-gray-300" />
@@ -53,7 +91,9 @@ const SignIn = () => {
         </View>
         <Text>
           Don't have an account?
-          <TouchableOpacity onPress={() => router.push('register/index')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("register/index")}
+          >
             <Text className="pt-4 text-primary">Sign Up</Text>
           </TouchableOpacity>
         </Text>

@@ -23,6 +23,7 @@ const LandingPage = () => {
                    color="bg-primary"
                    textColor="text-white" 
                    onPress={() => router.push('(tabs)')}
+                   
                   />
                 </View>
 
