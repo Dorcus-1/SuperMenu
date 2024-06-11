@@ -11,7 +11,7 @@ type Props = {
   color?: string;
   border?: string;
   textColor?: string;
-  onPress:()=>any;
+  onPress?:()=>any;
 };
 
 // create a component

@@ -89,7 +89,7 @@ const SignUp = () => {
             position="justify-center"
             color="bg-primary"
             textColor="text-white"
-            handlePress={handleSignUp}
+            onPress={handleSignUp}
           />
         </View>
         <View className="flex-row items-center my-4">
@@ -108,6 +108,7 @@ const SignUp = () => {
           position="justify-center"
           color="bg-primary"
           textColor="text-white"
+          
         />
       </View>
     </View>
