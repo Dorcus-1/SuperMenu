@@ -12,6 +12,7 @@ type Props = {
   border?: string;
   textColor?: string;
   onPress?:()=>any;
+  
 };
 
 // create a component

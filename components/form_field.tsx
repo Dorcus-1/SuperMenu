@@ -9,8 +9,8 @@ import {
 } from "react-native";
 interface Props extends TextInputProps {
   label?: string;
-  value: string;
-  handleChange: (text: string) => void;
+  value?: string;
+  handleChange?: (text: string) => void;
   placeholder?: string;
   secureTextEntry?: boolean;
   icon?: any; // assuming icon is a string representing the icon name
@@ -44,30 +44,5 @@ const Formfield: React.FC<Props> = ({
     </View>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 4,
-  },
-  label: {
-    marginBottom: 2,
-    alignSelf: "flex-start",
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 2,
-    borderColor: "gray",
-    borderRadius: 8,
-    height: 50,
-    paddingHorizontal: 8,
-    width:"80vw"
-  },
-  icon: {
-    marginRight: 8,
-  },
-  input: {
-    flex: 1,
-    color: "black",
-  },
-});
+
 export default Formfield;

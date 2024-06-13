@@ -12,7 +12,6 @@ product?:any
 
 // Create a component
 const Card:React.FC<Props> = ({ product}) => {
-  const { name, quantity, price, image } = product;
   const router= useRouter();
   const { dispatch } = useCart();
   const handleCardPress = () => {
@@ -30,15 +29,16 @@ const Card:React.FC<Props> = ({ product}) => {
     <TouchableOpacity  className="m-2"  onPress={handleCardPress}>
       <View className="flex-col border border-gray-300 rounded-lg overflow-hidden w-44 h-64 items-center justify-around">
         <View className="items-center justify-center mt-2">
-          <Image source={product.image} className="w-24 h-24" />
+          <Image source={{uri:product?.picture}} className="w-24 h-24" />
         </View>
         <View className="flex-1 items-center justify-center w-full p-2">
           <View className="mb-2">
-            <Text className="text-lg font-bold">{name}</Text>
-            <Text className="text-sm mt-1">{quantity}</Text>
+            <Text className="text-lg font-bold">{product?.name}</Text>
+            <Text className="text-sm mt-1">{product?.description}</Text>
+            
           </View>
           <View className="flex-row justify-around items-center pt-4 w-full">
-            <Text className="text-xl font-bold">${price}</Text>
+            <Text className="text-xl font-bold">${product?.price}</Text>
             <TouchableOpacity className="bg-primary p-2 rounded-full items-center w-12" onPress={handleAddPress}>
               <MaterialIcons name="add" size={24} color="white" />
             </TouchableOpacity>

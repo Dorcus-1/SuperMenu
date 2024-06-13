@@ -19,7 +19,7 @@ const SignUp = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const API_URL = "http://10.5.221.171:8000"; // Adjust this to your backend URL
+  const API_URL = "http://10.5.222.144:8000"; // Adjust this to your backend URL
 
   const handleSignUp = async () => {
     try {
@@ -27,7 +27,7 @@ const SignUp = () => {
         fullnames: fullName,
         email: email,
         password: password,
-        phone,
+        phone:phone,
       };
 
       const response = await axios.post(`${API_URL}/user/create`, userData);

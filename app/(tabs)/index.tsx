@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -13,8 +14,41 @@ import PromotionCard from "@/components/promotion_card";
 import { restaurants } from "@/data/restaurants.data";
 import Card from "@/components/shop_card";
 import Categories from "@/components/categories";
-import { categories } from "@/data/categories.data";
+
+import axios from "axios";
+
 export default function HomeScreen() {
+  const [categories, setCategories] = useState([]);
+  const [dishes, setDishes] = useState<any>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://10.5.222.144:8000/menu/all"); // Replace with your backend URL
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchDishes = async () => {
+      try {
+        const response = await axios.get("http://10.5.222.144:8000/dish/all"); // Replace with your backend URL
+        setDishes(response.data.dishes);
+        console.log("==============")
+        console.log(dishes);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchDishes();
+  }, []);
+
   return (
     <ScrollView className="flex-1 bg-white ">
       <View className="">
@@ -28,7 +62,7 @@ export default function HomeScreen() {
       </View>
 
       <View>
-        <Text className="p-2 ml-5 pb-6 text-xl font-medium">Categorie</Text>
+        <Text className="p-2 ml-5 pb-6 text-xl font-medium">Categories</Text>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -38,10 +72,8 @@ export default function HomeScreen() {
             paddingLeft: 12,
           }}
           data={categories}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <Categories name={item.name} icon={item.icon} />
-          )}
+          keyExtractor={(item: any) => item?.id.toString()}
+          renderItem={({ item }) => <Categories name={item.name}  />}
         />
       </View>
       <View>
@@ -54,8 +86,8 @@ export default function HomeScreen() {
             justifyContent: "space-around",
             paddingLeft: 13,
           }}
-          data={restaurants}
-          keyExtractor={(item) => item.id}
+          data={dishes}
+          keyExtractor={(item: any) => item?.id.toString()}
           renderItem={({ item }) => <Card product={item} />}
         />
       </View>
@@ -69,7 +101,7 @@ export default function HomeScreen() {
             justifyContent: "space-around",
             paddingLeft: 13,
           }}
-          data={restaurants}
+          data={dishes}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <Card product={item} />}
         />

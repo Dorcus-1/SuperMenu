@@ -1,5 +1,5 @@
 //import libraries
-import React, { useState }  from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Link, useRouter } from "expo-router";
 import Formfield from "@/components/form_field";
@@ -7,35 +7,33 @@ import { Feather } from "@expo/vector-icons";
 import ButtonComponent from "@/components/button";
 import { useNavigation } from "expo-router";
 import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 // create a functional component
 const SignIn = () => {
-  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const API_URL = "http://10.5.221.171:8000"; 
-
+  const API_URL = "http://10.5.222.144:8000";
 
   const handleSignIn = async () => {
     try {
       const userData = {
-       
         email: email,
         password: password,
-        
       };
       const response = await axios.post(`${API_URL}/user/login`, userData);
-      console.log("here");
+      await SecureStore.setItemAsync("token", response.data.token);
+      const token = await SecureStore.getItemAsync("token");
+      console.log(token);
 
-      console.log(response);
       console.log("Success", "You have signed up successfully!");
       router.push("landing-page");
       // Navigate to the login page
     } catch (error) {
       console.log("Error", "Failed to sign up. Please try again.");
       console.log(error);
-    }  
-  }
+    }
+  };
   const navigation = useNavigation();
   const router = useRouter();
   return (
@@ -50,7 +48,7 @@ const SignIn = () => {
           Enter your credentials to continue
         </Text>
         <View className="pt-6">
-        <Formfield
+          <Formfield
             icon={"mail"}
             value={email}
             placeholder={"Email"}
@@ -68,8 +66,7 @@ const SignIn = () => {
             position="justify-center"
             color="bg-primary"
             textColor="text-white"
-            handlePress={handleSignIn}
-        
+            onPress={handleSignIn}
           />
           <View className="flex-row items-center my-4">
             <View className="flex-1 h-px bg-gray-300" />

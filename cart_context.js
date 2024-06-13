@@ -4,6 +4,10 @@ import React, { createContext, useReducer, useContext } from 'react';
 const CartContext = createContext();
 
 const cartReducer = (state, action) => {
+  console.log("state and action")
+  console.log(state)
+  console.log(action)
+  const product={}
   switch (action.type) {
     case 'ADD_TO_CART':
       const existingItem = state.find(item => item.id === action.product.id);
