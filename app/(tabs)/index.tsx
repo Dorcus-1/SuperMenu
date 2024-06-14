@@ -19,7 +19,8 @@ import axios from "axios";
 
 export default function HomeScreen() {
   const [categories, setCategories] = useState([]);
-  const [dishes, setDishes] = useState<any>([]);
+  const [topDishes, setTopDishes] = useState<any>([]);
+  const[bestSellingDishes,setBestSellingDishes]=useState<any>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -35,18 +36,33 @@ export default function HomeScreen() {
   }, []);
 
   useEffect(() => {
-    const fetchDishes = async () => {
+    const fetchTopDishes = async () => {
       try {
-        const response = await axios.get("http://10.5.222.144:8000/dish/all"); // Replace with your backend URL
-        setDishes(response.data.dishes);
+        const response = await axios.get("http://10.5.222.144:8000/dish/chicken"); // Replace with your backend URL
+        setTopDishes(response.data.dishes);
         console.log("==============")
-        console.log(dishes);
+       
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
 
-    fetchDishes();
+    fetchTopDishes();
+  }, []);
+  
+  useEffect(() => {
+    const fetchBestSellingDishes = async () => {
+      try {
+        const response = await axios.get("http://10.5.222.144:8000/dish/cheese"); // Replace with your backend URL
+        setBestSellingDishes(response.data.dishes);
+        console.log("==============")
+        
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchBestSellingDishes();
   }, []);
 
   return (
@@ -86,7 +102,7 @@ export default function HomeScreen() {
             justifyContent: "space-around",
             paddingLeft: 13,
           }}
-          data={dishes}
+          data={topDishes}
           keyExtractor={(item: any) => item?.id.toString()}
           renderItem={({ item }) => <Card product={item} />}
         />
@@ -101,7 +117,7 @@ export default function HomeScreen() {
             justifyContent: "space-around",
             paddingLeft: 13,
           }}
-          data={dishes}
+          data={bestSellingDishes}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <Card product={item} />}
         />
